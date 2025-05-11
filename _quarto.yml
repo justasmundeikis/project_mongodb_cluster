@@ -1,0 +1,18 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "MongoDb Cluster Project"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+format:
+  html:
+    theme:
+      - flatly
+    toc: true
+
+files-ignore:
+  - persistent_data/**

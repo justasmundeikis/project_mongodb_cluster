@@ -1,0 +1,23 @@
+# Python-specific ignores
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Environment variables and virtual environments
+.env
+.venv/
+venv/
+ENV/
+.env.*
+
+# Data files
+imported_data/
+clean_data/
+persistent_data/
+*.parquet
+*.csv
+
+
+.quarto
+/.quarto/

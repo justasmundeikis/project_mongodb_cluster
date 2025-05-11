@@ -1,0 +1,109 @@
+services:
+  # ---------- CONFIG SERVERS ----------
+  configsvr1:
+    image: mongo:latest
+    container_name: configsvr1
+    command: --configsvr --replSet cfgRS --port 27017 --wiredTigerCacheSizeGB 0.5
+    ports:
+      - 27017:27017
+    volumes:
+      - ./persistent_data/configsvr1:/data/db
+    networks:
+      - mongo-cluster
+
+  configsvr2:
+    image: mongo:latest
+    container_name: configsvr2
+    command: --configsvr --replSet cfgRS --port 27017 --wiredTigerCacheSizeGB 0.5
+    volumes:
+      - ./persistent_data/configsvr2:/data/db
+    networks:
+      - mongo-cluster
+
+  configsvr3:
+    image: mongo:latest
+    container_name: configsvr3
+    command: --configsvr --replSet cfgRS --port 27017 --wiredTigerCacheSizeGB 0.5
+    volumes:
+      - ./persistent_data/configsvr3:/data/db
+    networks:
+      - mongo-cluster
+
+  # ---------- SHARD 1 ----------
+  shard1-node1:
+    image: mongo:latest
+    container_name: shard1-node1
+    command: --shardsvr --replSet shard1RS --port 27018 --wiredTigerCacheSizeGB 0.5
+    ports:
+      - 27018:27018
+    volumes:
+      - ./persistent_data/shard1-node1:/data/db
+    networks:
+      - mongo-cluster
+
+  shard1-node2:
+    image: mongo:latest
+    container_name: shard1-node2
+    command: --shardsvr --replSet shard1RS --port 27018 --wiredTigerCacheSizeGB 0.5
+    volumes:
+      - ./persistent_data/shard1-node2:/data/db
+    networks:
+      - mongo-cluster
+
+  shard1-node3:
+    image: mongo:latest
+    container_name: shard1-node3
+    command: --shardsvr --replSet shard1RS --port 27018 --wiredTigerCacheSizeGB 0.5
+    volumes:
+      - ./persistent_data/shard1-node3:/data/db
+    networks:
+      - mongo-cluster
+
+  # ---------- SHARD 2 ----------
+  shard2-node1:
+    image: mongo:latest
+    container_name: shard2-node1
+    command: --shardsvr --replSet shard2RS --port 27019 --wiredTigerCacheSizeGB 0.5
+    ports:
+      - 27019:27019
+    volumes:
+      - ./persistent_data/shard2-node1:/data/db
+    networks:
+      - mongo-cluster
+
+  shard2-node2:
+    image: mongo:latest
+    container_name: shard2-node2
+    command: --shardsvr --replSet shard2RS --port 27019 --wiredTigerCacheSizeGB 0.5
+    volumes:
+      - ./persistent_data/shard2-node2:/data/db
+    networks:
+      - mongo-cluster
+
+  shard2-node3:
+    image: mongo:latest
+    container_name: shard2-node3
+    command: --shardsvr --replSet shard2RS --port 27019 --wiredTigerCacheSizeGB 0.5
+    volumes:
+      - ./persistent_data/shard2-node3:/data/db
+    networks:
+      - mongo-cluster
+
+  # ---------- MONGOS ROUTER ----------
+  mongos:
+    image: mongo:latest
+    container_name: mongos
+    depends_on:
+      - configsvr1
+      - configsvr2
+      - configsvr3
+    ports:
+      - 27020:27017
+    command: >
+      mongos --configdb cfgRS/configsvr1:27017,configsvr2:27017,configsvr3:27017 --bind_ip_all
+    networks:
+      - mongo-cluster
+
+networks:
+  mongo-cluster:
+    driver: bridge

@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>MongoDb Cluster Project</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-985aa47af68dae11cd4d235c71fb941e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-c6cea6cfcc3bb0d47bb10f2069662b1f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">MongoDb Cluster Project</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#intro" id="toc-intro" class="nav-link active" data-scroll-target="#intro">Intro</a>
+  <ul class="collapse">
+  <li><a href="#why-use-a-mongodb-cluster" id="toc-why-use-a-mongodb-cluster" class="nav-link" data-scroll-target="#why-use-a-mongodb-cluster">Why Use a MongoDB Cluster?</a></li>
+  <li><a href="#key-objectives" id="toc-key-objectives" class="nav-link" data-scroll-target="#key-objectives">Key Objectives:</a></li>
+  <li><a href="#considerations" id="toc-considerations" class="nav-link" data-scroll-target="#considerations">Considerations</a></li>
+  <li><a href="#ensuring-reproducibility" id="toc-ensuring-reproducibility" class="nav-link" data-scroll-target="#ensuring-reproducibility">Ensuring Reproducibility:</a></li>
+  </ul></li>
+  <li><a href="#python" id="toc-python" class="nav-link" data-scroll-target="#python">Python</a></li>
+  <li><a href="#docker" id="toc-docker" class="nav-link" data-scroll-target="#docker">Docker</a>
+  <ul class="collapse">
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
+  <li><a href="#what-is-docker" id="toc-what-is-docker" class="nav-link" data-scroll-target="#what-is-docker">What is Docker?</a></li>
+  <li><a href="#why-docker-performs-better-on-linux" id="toc-why-docker-performs-better-on-linux" class="nav-link" data-scroll-target="#why-docker-performs-better-on-linux">Why Docker Performs Better on Linux</a></li>
+  <li><a href="#learning-resources" id="toc-learning-resources" class="nav-link" data-scroll-target="#learning-resources">Learning Resources</a></li>
+  </ul></li>
+  <li><a href="#installing-docker" id="toc-installing-docker" class="nav-link" data-scroll-target="#installing-docker">Installing Docker</a></li>
+  <li><a href="#what-is-docker-compose" id="toc-what-is-docker-compose" class="nav-link" data-scroll-target="#what-is-docker-compose">What is Docker Compose?</a>
+  <ul class="collapse">
+  <li><a href="#key-docker-compose-commands" id="toc-key-docker-compose-commands" class="nav-link" data-scroll-target="#key-docker-compose-commands">Key Docker Compose Commands</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#mongodb-setup" id="toc-mongodb-setup" class="nav-link" data-scroll-target="#mongodb-setup">MongoDb Setup</a>
+  <ul class="collapse">
+  <li><a href="#sharding" id="toc-sharding" class="nav-link" data-scroll-target="#sharding">Sharding</a></li>
+  <li><a href="#sharding-vs.-partitioning" id="toc-sharding-vs.-partitioning" class="nav-link" data-scroll-target="#sharding-vs.-partitioning">Sharding vs.&nbsp;Partitioning</a></li>
+  <li><a href="#role-of-indexing" id="toc-role-of-indexing" class="nav-link" data-scroll-target="#role-of-indexing">Role of Indexing</a></li>
+  <li><a href="#combining-sharding-and-indexing-in-mongodb" id="toc-combining-sharding-and-indexing-in-mongodb" class="nav-link" data-scroll-target="#combining-sharding-and-indexing-in-mongodb">Combining Sharding and Indexing in MongoDB</a></li>
+  <li><a href="#replication" id="toc-replication" class="nav-link" data-scroll-target="#replication">Replication</a></li>
+  <li><a href="#orchestration" id="toc-orchestration" class="nav-link" data-scroll-target="#orchestration">Orchestration</a></li>
+  </ul></li>
+  <li><a href="#preparation" id="toc-preparation" class="nav-link" data-scroll-target="#preparation">Preparation</a></li>
+  <li><a href="#preparation-1" id="toc-preparation-1" class="nav-link" data-scroll-target="#preparation-1">Preparation</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a>
+  <ul class="collapse">
+  <li><a href="#importing-data" id="toc-importing-data" class="nav-link" data-scroll-target="#importing-data">Importing data</a></li>
+  <li><a href="#data-cleaning" id="toc-data-cleaning" class="nav-link" data-scroll-target="#data-cleaning">Data cleaning</a></li>
+  </ul></li>
+  <li><a href="#mongodb-instances" id="toc-mongodb-instances" class="nav-link" data-scroll-target="#mongodb-instances">MongoDB Instances</a>
+  <ul class="collapse">
+  <li><a href="#docker-compose.yml" id="toc-docker-compose.yml" class="nav-link" data-scroll-target="#docker-compose.yml"><code>docker-compose.yml</code></a>
+  <ul class="collapse">
+  <li><a href="#config-servers-setup" id="toc-config-servers-setup" class="nav-link" data-scroll-target="#config-servers-setup">Config Servers Setup</a></li>
+  <li><a href="#shard-setup" id="toc-shard-setup" class="nav-link" data-scroll-target="#shard-setup">Shard Setup</a></li>
+  <li><a href="#mongodb-router-mongos-setup" id="toc-mongodb-router-mongos-setup" class="nav-link" data-scroll-target="#mongodb-router-mongos-setup">MongoDB Router (<code>mongos</code>) Setup</a></li>
+  <li><a href="#network-configuration" id="toc-network-configuration" class="nav-link" data-scroll-target="#network-configuration">Network Configuration</a></li>
+  <li><a href="#launching-the-setup" id="toc-launching-the-setup" class="nav-link" data-scroll-target="#launching-the-setup">Launching the Setup</a></li>
+  </ul></li>
+  <li><a href="#initialize-relica-set" id="toc-initialize-relica-set" class="nav-link" data-scroll-target="#initialize-relica-set">initialize relica set</a></li>
+  <li><a href="#adding-sharding" id="toc-adding-sharding" class="nav-link" data-scroll-target="#adding-sharding">adding sharding</a></li>
+  <li><a href="#inserting-data" id="toc-inserting-data" class="nav-link" data-scroll-target="#inserting-data">Inserting data</a></li>
+  <li><a href="#indexing-collection" id="toc-indexing-collection" class="nav-link" data-scroll-target="#indexing-collection">Indexing collection</a></li>
+  </ul></li>
+  <li><a href="#plotting-the-travel-of-a-certain-ship." id="toc-plotting-the-travel-of-a-certain-ship." class="nav-link" data-scroll-target="#plotting-the-travel-of-a-certain-ship.">Plotting the travel of a certain ship.</a></li>
+  <li><a href="#proving-the-repliaction-works" id="toc-proving-the-repliaction-works" class="nav-link" data-scroll-target="#proving-the-repliaction-works">Proving the repliaction works</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">MongoDb Cluster Project</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="intro" class="level1">
+<h1>Intro</h1>
+<p>This project aims to demonstrate how to set up a MongoDB cluster, which can perform parallel processing through data sharding (a method of distributing data across multiple machines) and ensure data continuity by implementing database replication (copying data across multiple nodes to ensure availability).</p>
+<section id="why-use-a-mongodb-cluster" class="level2">
+<h2 class="anchored" data-anchor-id="why-use-a-mongodb-cluster">Why Use a MongoDB Cluster?</h2>
+<p>MongoDB is favored for its built-in capabilities to handle sharding and clustering. This setup allows it to manage large-scale data with high availability and fault tolerance, making it a robust choice for distributed data systems. Even though AIS data is structured and could fit naturally into SQL databases like DuckDB, this project’s focus is to explore MongoDB’s unique features and capabilities in handling distributed data schemes.</p>
+<p>Comparatively, MongoDB’s approach is more straightforward than configuring MySQL/MariaDB with Vitess, which requires additional tooling for scaling. Looking further, technologies like CockroachDB, a distributed SQL database offering sharding and replication, present interesting avenues for exploration in the field of distributed databases.</p>
+</section>
+<section id="key-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="key-objectives">Key Objectives:</h2>
+<ol type="1">
+<li>Docker and Docker Compose Setup:</li>
+</ol>
+<ul>
+<li>We’ll start by setting up Docker, a platform that simplifies the deployment of applications using containers. With Docker Compose, you’ll create multiple Docker containers running MongoDB instances and connect them through Docker’s bridge network. This network provides isolated communication between containers, simulating a real-world database cluster environment.</li>
+</ul>
+<ol start="2" type="1">
+<li>Initializing MongoDB:</li>
+</ol>
+<ul>
+<li>You’ll learn to initialize and configure the MongoDB instances. We’ll walk through setting up sharding, which allows efficient data distribution, and creating indexes, which enhance query performance by reducing data retrieval time.</li>
+</ul>
+<ol start="3" type="1">
+<li>Handling AIS Data:</li>
+</ol>
+<ul>
+<li>The project downloads and processes AIS (Automatic Identification System) data. AIS is a vital maritime technology for tracking vessels. We’ll utilize Polars, a high-performance DataFrame library optimized for speed and efficiency, to clean and prepare the data. This cleaned data will then be ingested into the MongoDB cluster for further analysis.</li>
+</ul>
+</section>
+<section id="considerations" class="level2">
+<h2 class="anchored" data-anchor-id="considerations">Considerations</h2>
+<ul>
+<li>MongoDB instances can heavily utilize RAM (Random Access Memory) due to their nature of holding data temporarily in memory before committing it to storage. Effective RAM management is crucial to maintain system performance, especially as data volumes grow.</li>
+</ul>
+</section>
+<section id="ensuring-reproducibility" class="level2">
+<h2 class="anchored" data-anchor-id="ensuring-reproducibility">Ensuring Reproducibility:</h2>
+<ul>
+<li>This project is built in Python, and we provide a <code>requirements.txt</code> file to facilitate setting up the same environment on any machine. This file contains all the necessary libraries and their versions, ensuring that anyone following the guide can replicate the setup and results seamlessly.</li>
+</ul>
+</section>
+</section>
+<section id="python" class="level1">
+<h1>Python</h1>
+<p>To get started with reproducing this project, you’ll need to clone the repository from the designated URL: (repository_url). It’s assumed that you already have Python installed on your system. To avoid any conflicts with your local Python installation, it’s recommended to create an isolated virtual environment using Python’s venv module. This ensures that the project’s dependencies do not interfere with your global Python environment.</p>
+<ol type="1">
+<li><p>Create a Virtual Environment:</p>
+<ul>
+<li>For Windows:</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv venv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>For Unix-like systems (Linux, macOS):</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv venv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This command will generate a directory named venv, containing all the necessary files for maintaining an isolated Python environment.</p></li>
+<li><p>Activate the Virtual Environment:</p>
+<ul>
+<li>On Windows, activate it by running:</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">.</span>\venv\Scripts\activate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>On Unix-like systems, use:</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> venv/bin/activate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
+<p>Activating the virtual environment changes your shell prompt, indicating that the environment is now active. This allows you to install packages without affecting your system-wide Python installation.</p>
+<ol start="3" type="1">
+<li>Install Required Packages:</li>
+</ol>
+<p>With the virtual environment activated, execute the following command to install the project’s dependencies:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> requirements.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The requirements.txt file contains a list of all necessary Python packages, ensuring that you have the same versions used during the project development.</p>
+<p>By following these steps, you’ll establish a clean, isolated environment tailored specifically for this project, facilitating an error-free experience during setup and execution.</p>
+</section>
+<section id="docker" class="level1">
+<h1>Docker</h1>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<section id="what-is-docker" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-docker">What is Docker?</h3>
+<p>Docker is a platform for containerization, which represents a lightweight form of virtualization. It allows you to package applications and their dependencies into standardized units, called containers. These containers can run consistently across different computing environments, enhancing reproducibility and streamlining the deployment process. This capability enables users to replicate work environments seamlessly and maintain consistent software operations from development to production.</p>
+</section>
+<section id="why-docker-performs-better-on-linux" class="level3">
+<h3 class="anchored" data-anchor-id="why-docker-performs-better-on-linux">Why Docker Performs Better on Linux</h3>
+<p>Docker’s architecture leverages Linux kernel features such as namespaces and cgroups. These features allow Docker to run containers with minimal overhead by directly interacting with the kernel. As a result, Docker achieves optimal performance on Linux, benefiting from its native containerization support. On MacOS and Windows, Docker operates by running a Linux virtual machine to emulate these capabilities, which introduces additional overhead and may lead to less efficient use of system resources compared to native Linux environments.</p>
+</section>
+<section id="learning-resources" class="level3">
+<h3 class="anchored" data-anchor-id="learning-resources">Learning Resources</h3>
+<p>For more detailed learning, explore these helpful Docker resources: [Add URL1 here] and [Add URL2 here].</p>
+</section>
+</section>
+<section id="installing-docker" class="level2">
+<h2 class="anchored" data-anchor-id="installing-docker">Installing Docker</h2>
+<p>To install Docker, visit the <a href="https://docs.docker.com/get-docker/">Docker website</a> for the official installation instructions. This includes steps for installing Docker, Docker Compose, and for MacOS or Windows users, Docker Desktop. However, since this documentation primarily targets Linux users due to Docker’s native compatibility with Linux, the instructions provided will focus on terminal commands relevant to Linux systems.</p>
+</section>
+<section id="what-is-docker-compose" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-docker-compose">What is Docker Compose?</h2>
+<p>Docker Compose is a tool that simplifies the configuration and management of multi-container Docker applications. It utilizes a YAML file, typically named <code>docker-compose.yml</code>, to define services, networks, and volumes required for an application. This central configuration allows you to launch an entire multi-service application with one command, significantly enhancing productivity and simplifying the management of complex environments.</p>
+<section id="key-docker-compose-commands" class="level3">
+<h3 class="anchored" data-anchor-id="key-docker-compose-commands">Key Docker Compose Commands</h3>
+<ul>
+<li><strong>Starting Services</strong>:
+<ul>
+<li><code>docker compose up -d</code>: Initializes services as defined in the <code>docker-compose.yml</code> file. The <code>-d</code> flag runs the containers in detached mode, meaning they execute in the background, and your terminal remains available for other commands.</li>
+<li><code>docker compose up -d --build --pull</code>: Includes the <code>--build</code> flag to rebuild specified build contexts and the <code>--pull</code> flag to ensure services use the latest images from the registry.</li>
+</ul></li>
+<li><strong>Listing Running Containers</strong>:
+<ul>
+<li><code>docker ps</code>: Displays all currently running Docker containers, showing service names, container IDs, ports, and image names—tools essential for monitoring active services.</li>
+</ul></li>
+<li><strong>Stopping Services</strong>:
+<ul>
+<li><code>docker compose down</code>: Halts all running services defined by Docker Compose.</li>
+<li><code>docker compose down --rmi all --volumes</code>: Removes associated resources such as images and volumes, effectively cleaning up your environment.</li>
+<li><strong>Stopping Individual Containers</strong>: Use <code>docker stop &lt;container_id&gt;</code> to stop a specific container, which is useful for testing fault resilience. For instance, you can simulate primary MongoDB instance failures by selectively bringing down containers.</li>
+</ul></li>
+<li><strong>Restarting Services</strong>:
+<ul>
+<li><code>docker compose restart</code>: Restarts all services as specified in your <code>docker-compose.yml</code> file.</li>
+</ul></li>
+</ul>
+<p>By mastering these commands and understanding their applications, you’ll streamline container management, enhance operational efficiency, and maintain robust control over your Dockerized applications.</p>
+</section>
+</section>
+</section>
+<section id="mongodb-setup" class="level1">
+<h1>MongoDb Setup</h1>
+<p>MongoDB is a NoSQL database, which means it does not rely on the traditional table-based relational database schema. Instead, it uses a flexible, JSON-like document model that is highly scalable and well-suited for handling large volumes of unstructured data.</p>
+<p>One of the standout features of MongoDB is its ability to support both sharding and replication, which are essential for achieving horizontal scalability and ensuring data availability and reliability.</p>
+<section id="sharding" class="level2">
+<h2 class="anchored" data-anchor-id="sharding">Sharding</h2>
+<p><strong>Sharding</strong> is a strategy used in MongoDB to distribute data across multiple servers (or database instances) to efficiently manage large datasets. It works by dividing the dataset into smaller, easily manageable segments called “shards,” based on a shard key. The shard key acts as an index that determines how data is split and stored across different shards. For instance, if you’re working with data from 2020 to 2025, you could shard the data by year, allowing the system to query data for a specific year by accessing only the relevant shard. This optimizes read operations by minimizing unnecessary data scans.</p>
+</section>
+<section id="sharding-vs.-partitioning" class="level2">
+<h2 class="anchored" data-anchor-id="sharding-vs.-partitioning">Sharding vs.&nbsp;Partitioning</h2>
+<p><strong>Sharding</strong>: This is the process of distributing data across multiple servers or nodes, enabling the system to scale horizontally. It helps in managing very large datasets by dividing them into shards, with each residing on a different server. This setup allows for parallel processing and efficient load balancing, especially when a single server is not sufficient to handle the data volume.</p>
+<p><strong>Partitioning</strong>: Unlike sharding, partitioning generally refers to breaking down a database table into smaller segments within a single database instance. This method is typically employed to enhance performance and manageability on a smaller scale. However, <strong>MongoDB does not support partitioning</strong> as seen in traditional relational databases, relying instead on sharding for distributing large datasets across multiple nodes.</p>
+</section>
+<section id="role-of-indexing" class="level2">
+<h2 class="anchored" data-anchor-id="role-of-indexing">Role of Indexing</h2>
+<p><strong>Indexing</strong> is critical in both sharded and non-sharded environments as it improves data retrieval speed. An index in MongoDB is a data structure (like a B-tree or hash) that helps in quick searches and reduces query execution time. Indexing allows the database to locate specific records swiftly without scanning entire datasets, which is especially crucial in large-scale applications.</p>
+<p>In a Sharded Environment: Each shard maintains its own indexes to optimize data access locally. The combination of effective sharding and indexing ensures that queries are efficiently routed to the correct shard, minimizing inter-shard operations.</p>
+</section>
+<section id="combining-sharding-and-indexing-in-mongodb" class="level2">
+<h2 class="anchored" data-anchor-id="combining-sharding-and-indexing-in-mongodb">Combining Sharding and Indexing in MongoDB</h2>
+<p>Though MongoDB doesn’t employ traditional partitioning, it combines sharding and indexing to optimize data storage, retrieval, and management:</p>
+<p><strong>Choosing a Shard Key</strong>: The shard key is pivotal as it dictates the distribution of data across shards. A well-chosen shard key aligns with prevalent query patterns to maximize efficiency. In cases of unclear distribution, MongoDB can employ hashed sharding, distributing data evenly using a hash of the shard key.</p>
+<p><strong>Implementing Indexing</strong>: Deploying indexes on frequently queried fields, such as timestamps or identifiers (like MMSI numbers), expedites data retrievals across extensive datasets.</p>
+</section>
+<section id="replication" class="level2">
+<h2 class="anchored" data-anchor-id="replication">Replication</h2>
+<p>Replication in MongoDB is designed to ensure data reliability and fault tolerance. It involves maintaining copies of the same dataset on multiple servers, known as a “replica set.” If one server fails (e.g., due to hardware issues like a disk failure or resource exhaustion), another replica can take over, ensuring continuous data availability.</p>
+<p>In a replica set, one server acts as the “primary,” receiving all write operations. The others are “secondaries” that replicate the primary’s data asynchronously. This setup enhances reliability by allowing the system to continue operating even if a primary fails, as a secondary can be promoted to primary.</p>
+<p>In this project, we will configure 2 shards, each with one primary and 2 secondary replicas for redundancy.</p>
+</section>
+<section id="orchestration" class="level2">
+<h2 class="anchored" data-anchor-id="orchestration">Orchestration</h2>
+<p>Managing multiple shards and replicas requires careful orchestration to ensure seamless operation:</p>
+<ul>
+<li><strong>MongoDB Router (mongos)</strong>: This acts as the client interface, routing queries and operations to the appropriate shards based on the chosen shard key.</li>
+<li><strong>Config Servers</strong>: These hold metadata and configuration details for the cluster, such as data distributions among the shards. It’s crucial to have an odd number of config servers to achieve a voting quorum, ensuring fault tolerance during decision-making and maintaining cluster integrity. Commonly, three config servers are recommended.</li>
+</ul>
+</section>
+</section>
+<section id="preparation" class="level1">
+<h1>Preparation</h1>
+<p>Certainly! Here’s the refined section with improvements based on best practices:</p>
+<hr>
+</section>
+<section id="preparation-1" class="level1">
+<h1>Preparation</h1>
+<p>Set up your project directory with the following subdirectories to organize data effectively:</p>
+<ul>
+<li><p><strong><code>/imported_data</code></strong>: Will be used to store the raw <code>.csv</code> files downloaded from <a href="https://web.ais.dk/aisdata/">AIS Data Source</a>.</p>
+<ul>
+<li>the <code>/scripts/download_data.py</code> will handle the directory creation if it does not exist</li>
+</ul></li>
+<li><p><strong><code>/cleaned_data</code></strong>: We will use python script <code>prepare_data.py</code> to cleanup raw data. The clenaed datasets will be stored in this subdirectory. The python script will create the directory if it does not exist.</p></li>
+<li><p><strong><code>/persistent_data</code></strong>: This directory binds to Docker containers to provide persistent data storage. Ensures that your data remains intact, even if a container or the entire cluster is shut down and restarted. This is crucial for data continuity.</p></li>
+</ul>
+<p>run <code>mkdir persistent_data</code> in temrminal prior to launching <code>docker compose up -d</code> to nesure the volums can be bound.</p>
+<p>Note:</p>
+<p>In this scenario, the ETL (Extract, Transform, Load) approach is preferable to ELT (Extract, Load, Transform). By cleaning and transforming data before loading it into the database, ETL reduces the data volume entering the system. This is critical for managing large AIS datasets efficiently, as it saves storage space and enhances query performance. ETL ensures only relevant and clean data populate the database, minimizing unnecessary resource use across multiple servers in a sharded environment. While ELT might be advantageous when leveraging powerful database processing capabilities, the upfront data refinement in ETL is more suited for optimizing resource allocation and ensuring database efficiency in this case.</p>
+</section>
+<section id="data" class="level1">
+<h1>Data</h1>
+<section id="importing-data" class="level2">
+<h2 class="anchored" data-anchor-id="importing-data">Importing data</h2>
+<p>We will source our data from the <a href="https://web.ais.dk/aisdata/">AIS Data Source</a> by downloading the following datasets for analysis:</p>
+<ul>
+<li>aisdk-2025-05-01.zip</li>
+<li>aisdk-2025-05-02.zip</li>
+<li>aisdk-2025-05-03.zip</li>
+<li>aisdk-2025-05-04.zip</li>
+<li>aisdk-2025-05-05.zip</li>
+<li>aisdk-2025-05-06.zip</li>
+<li>aisdk-2025-05-07.zip</li>
+</ul>
+<p>To manage the downloading of these datasets, we use a Python script, <code>download_raw_data.py</code>, that performs these tasks:</p>
+<ul>
+<li>Downloads each specified dataset.</li>
+<li>Extracts the contents from the downloaded ZIP files.</li>
+<li>Deletes the ZIP files once extraction is complete.</li>
+<li>Utilizes ThreadPoolExecutor to handle tasks concurrently, significantly reducing the time required for downloading, which is typically an I/O-bound and time-consuming task.</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pathlib</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> urllib.parse</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> zipfile</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> concurrent.futures <span class="im">import</span> ThreadPoolExecutor</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a local path under your current working directory</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>imported_data_dir <span class="op">=</span> pathlib.Path.cwd() <span class="op">/</span> <span class="st">"imported_data"</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the directory if it doesn't exist</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>imported_data_dir.mkdir(parents<span class="op">=</span><span class="va">True</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://web.ais.dk/aisdata/"</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>files <span class="op">=</span> [</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">'aisdk-2025-05-01.zip'</span>,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">'aisdk-2025-05-02.zip'</span>,</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">'aisdk-2025-05-03.zip'</span>,</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">'aisdk-2025-05-04.zip'</span>,</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">'aisdk-2025-05-05.zip'</span>,</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">'aisdk-2025-05-06.zip'</span>,</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">'aisdk-2025-05-07.zip'</span>,</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> download_file(file_name, base_url, destination_dir):</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Download a single zip file."""</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    full_url <span class="op">=</span> urllib.parse.urljoin(base_url, file_name)</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    zip_path <span class="op">=</span> destination_dir <span class="op">/</span> file_name</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Downloading: </span><span class="sc">{</span>file_name<span class="sc">}</span><span class="ss"> from </span><span class="sc">{</span>full_url<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>        response <span class="op">=</span> requests.get(full_url, timeout<span class="op">=</span><span class="dv">10</span>)  <span class="co"># Added timeout for debugging</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>        response.raise_for_status()</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="bu">open</span>(zip_path, <span class="st">'wb'</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>            <span class="bu">file</span>.write(response.content)</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Download complete: </span><span class="sc">{</span>file_name<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> requests.RequestException <span class="im">as</span> e:</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Failed to download </span><span class="sc">{</span>file_name<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_file(zip_path):</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Extract a single zip file."""</span></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> zip_path.exists():</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Extracting: </span><span class="sc">{</span>zip_path<span class="sc">.</span>name<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>            <span class="cf">with</span> zipfile.ZipFile(zip_path, <span class="st">'r'</span>) <span class="im">as</span> zip_ref:</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>                zip_ref.extractall(zip_path.parent)</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Extraction complete: </span><span class="sc">{</span>zip_path<span class="sc">.</span>name<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> zipfile.BadZipFile:</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Failed to extract </span><span class="sc">{</span>zip_path<span class="sc">.</span>name<span class="sc">}</span><span class="ss">: Bad zip file"</span>)</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> delete_file(zip_path):</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Delete a single zip file."""</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> zip_path.exists():</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Deleting: </span><span class="sc">{</span>zip_path<span class="sc">.</span>name<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>            zip_path.unlink()</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Deletion complete: </span><span class="sc">{</span>zip_path<span class="sc">.</span>name<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Failed to delete </span><span class="sc">{</span>zip_path<span class="sc">.</span>name<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a><span class="co"># A reasonable number of workers given the I/O-bound nature</span></span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>max_workers <span class="op">=</span> <span class="dv">16</span></span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Starting downloads..."</span>)</span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> ThreadPoolExecutor(max_workers<span class="op">=</span>max_workers) <span class="im">as</span> executor:</span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>    executor.<span class="bu">map</span>(<span class="kw">lambda</span> f: download_file(f, url, imported_data_dir), files)</span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>zip_files <span class="op">=</span> <span class="bu">list</span>(imported_data_dir.glob(<span class="st">"*.zip"</span>))</span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Starting extraction..."</span>)</span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> ThreadPoolExecutor(max_workers<span class="op">=</span>max_workers) <span class="im">as</span> executor:</span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a>    executor.<span class="bu">map</span>(extract_file, zip_files)</span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Starting deletion..."</span>)</span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> ThreadPoolExecutor(max_workers<span class="op">=</span>max_workers) <span class="im">as</span> executor:</span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a>    executor.<span class="bu">map</span>(delete_file, zip_files)</span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Process complete."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Future Improvements</p>
+<p>To enhance this process, consider implementing a method to automatically download the most recent datasets available on the source website. This could involve:</p>
+<ul>
+<li>Dynamically determining the current date range and downloading most recent datasets.</li>
+<li>Crawling the website to capture the latest available file entries and utilizing these URLs for download.</li>
+</ul>
+<p>These improvements could ensure you’re always working with the most up-to-date datasets, removing the need to manually specify file names.</p>
+</section>
+<section id="data-cleaning" class="level2">
+<h2 class="anchored" data-anchor-id="data-cleaning">Data cleaning</h2>
+<p>The <code>clean_data.py</code> script is responsible for processing raw data files. It executes the following tasks:</p>
+<ul>
+<li>Loads all <code>.csv</code> files located in the <code>imported_data</code> directory.</li>
+<li>Cleans up the column names by standardizing them to lower case and replacing spaces with underscores.</li>
+<li>Drops duplicate rows, where uniqueness is defined by a combination of the <code>timestamp</code> and <code>mmsi</code> columns.</li>
+<li>Transforms the <code>timestamp</code> format from <code>dd/mm/yyyy</code> to <code>yyyy-mm-dd</code>.</li>
+<li>Saves the cleaned data as Parquet files in the <code>clean_data</code> directory, which is efficient for storage and query performance.</li>
+</ul>
+<p>Data cleaning can be resource-intensive. Ensure your system has at least 32 GB of RAM. Configuring a swap file of at least 12 GB is recommended to maintain system stability during large data operations.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pathlib</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> gc</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create cleaned data directory</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>import_data_path <span class="op">=</span> pathlib.Path.cwd() <span class="op">/</span> <span class="st">"imported_data"</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>cleaned_data_path <span class="op">=</span> pathlib.Path.cwd() <span class="op">/</span> <span class="st">"clean_data"</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure cleaned_data directory exists</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>cleaned_data_path.mkdir(parents<span class="op">=</span><span class="va">True</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co"># List all CSV files in the imported_data directory</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>csv_files <span class="op">=</span> <span class="bu">list</span>(import_data_path.glob(<span class="st">"*.csv"</span>))</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> csv_file <span class="kw">in</span> csv_files:</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Processing </span><span class="sc">{</span>csv_file<span class="sc">.</span>name<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pl.read_csv(csv_file)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.rename({<span class="st">"# Timestamp"</span>: <span class="st">"timestamp"</span>})</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    new_column_names <span class="op">=</span> {col: col.lower().replace(<span class="st">' '</span>, <span class="st">'_'</span>) <span class="cf">for</span> col <span class="kw">in</span> df.columns}</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.rename(new_column_names)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Clean and parse Timestamp</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.with_columns(</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">"timestamp"</span>)</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>        <span class="co">#.cast(str)</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>        <span class="co">#.str.strip_chars()</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">str</span>.strptime(pl.Datetime, <span class="bu">format</span><span class="op">=</span><span class="st">"</span><span class="sc">%d</span><span class="st">/%m/%Y %H:%M:%S"</span>, strict<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add 'date' column</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.with_columns(</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">"timestamp"</span>).dt.date().alias(<span class="st">"date"</span>)</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Format Timestamp to ISO string (before saving)</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.with_columns(</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">"timestamp"</span>).dt.strftime(<span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st">T%H:%M:%S"</span>)</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.unique(subset<span class="op">=</span>[<span class="st">"timestamp"</span>, <span class="st">"mmsi"</span>], maintain_order<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>    cleaned_filename <span class="op">=</span> csv_file.stem <span class="op">+</span> <span class="st">'-cleaned.parquet'</span></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>    df.write_parquet(cleaned_data_path <span class="op">/</span> cleaned_filename)</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Saved cleaned file as </span><span class="sc">{</span>cleaned_filename<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Deleteing Dataframe and forcein garbace collection</span></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>    <span class="kw">del</span> df</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>    gc.collect()</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Process complete"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="mongodb-instances" class="level1">
+<h1>MongoDB Instances</h1>
+<p>In this section, we’ll cover the setup and initialization of MongoDB including configuration servers, shards, and the MongoDB router using Docker Compose.</p>
+<section id="docker-compose.yml" class="level2">
+<h2 class="anchored" data-anchor-id="docker-compose.yml"><code>docker-compose.yml</code></h2>
+<p>The <code>docker-compose.yml</code> file orchestrates multiple MongoDB components necessary for a sharded cluster environment. We’ll look at how to configure config servers, shards, and the router.</p>
+<section id="config-servers-setup" class="level3">
+<h3 class="anchored" data-anchor-id="config-servers-setup">Config Servers Setup</h3>
+<p>The config servers hold metadata and settings for the MongoDB cluster, crucial for managing data across shards.</p>
+<ul>
+<li><p><strong>Image and Containers</strong>: We use the <code>mongo:latest</code> image to ensure we’re using the most recent stable MongoDB release for all components. Each config server is named configsvr1, configsvr2, and configsvr3.</p></li>
+<li><p><strong>Command</strong>:</p>
+<ul>
+<li><code>--configsvr</code>: Indicates it’s a config server.</li>
+<li><code>--replSet cfgRS</code>: Specifies the replica set name for the config servers, allowing them to replicate data for redundancy.</li>
+<li><code>--port 27017</code>: The port on which the server listens.</li>
+<li><code>--wiredTigerCacheSizeGB 0.5</code>: Limits the WiredTiger cache size to optimize memory usage.</li>
+</ul></li>
+<li><p><strong>Ports and Volumes</strong>:</p>
+<ul>
+<li>Maps the host port 27017 to the container’s port 27017, making it accessible.</li>
+<li>Binds <code>./persistent_data/configsvr1</code> to <code>/data/db</code> in the container, ensuring data persistence between restarts.</li>
+</ul></li>
+<li><p><strong>Networking</strong>: Uses the <code>mongo-cluster</code> network, a custom Docker bridge network allowing inter-container communication within our MongoDB cluster.</p></li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">configsvr1</span><span class="kw">:</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mongo:latest</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">container_name</span><span class="kw">:</span><span class="at"> configsvr1</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">command</span><span class="kw">:</span><span class="at"> --configsvr --replSet cfgRS --port 27017 --wiredTigerCacheSizeGB 0.5</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> 27017:27017</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> ./persistent_data/configsvr1:/data/db</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">networks</span><span class="kw">:</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> mongo-cluster</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="shard-setup" class="level3">
+<h3 class="anchored" data-anchor-id="shard-setup">Shard Setup</h3>
+<p>Each shard server is set up similarly, with unique ports and specific configurations.</p>
+<ul>
+<li><strong>Command</strong>:
+<ul>
+<li><code>--shardsvr</code>: Specifies that it is a shard server.</li>
+<li><code>--replSet shard1RS</code>: Defines the replica set for shard nodes for data replication.</li>
+</ul></li>
+<li><strong>Ports and Volumes</strong>:
+<ul>
+<li>Shard 1 runs on port 27018, and Shard 2 runs on port 27019.</li>
+<li>Each shard node binds a local directory for data persistence.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">shard1-node1</span><span class="kw">:</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mongo:latest</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">container_name</span><span class="kw">:</span><span class="at"> shard1-node1</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">command</span><span class="kw">:</span><span class="at"> --shardsvr --replSet shard1RS --port 27018 --wiredTigerCacheSizeGB 0.5</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> 27018:27018</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> ./persistent_data/shard1-node1:/data/db</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">networks</span><span class="kw">:</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> mongo-cluster</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="mongodb-router-mongos-setup" class="level3">
+<h3 class="anchored" data-anchor-id="mongodb-router-mongos-setup">MongoDB Router (<code>mongos</code>) Setup</h3>
+<p>The <code>mongos</code> router is responsible for directing queries to the appropriate shards.</p>
+<ul>
+<li><p><strong>Dependencies</strong>: The <code>depends_on</code> option ensures the router starts only after the config servers are up and running.</p></li>
+<li><p><strong>Ports and Command</strong>:</p>
+<ul>
+<li>The router listens on port 27020 (mapped internally to 27017), ensuring external access.</li>
+<li>Command:
+<ul>
+<li><code>mongos</code>: Starts the router service.</li>
+<li><code>--configdb cfgRS/configsvr1:27017,configsvr2:27017,configsvr3:27017</code>: Specifies the config servers to use.</li>
+<li><code>--bind_ip_all</code>: Allows the container to be accessible externally.</li>
+</ul></li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">mongos</span><span class="kw">:</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mongo:latest</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">container_name</span><span class="kw">:</span><span class="at"> mongos</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">depends_on</span><span class="kw">:</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> configsvr1</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> configsvr2</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> configsvr3</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> 27020:27017</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="fu">    command</span><span class="kw">: </span><span class="ch">&gt;</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>      mongos --configdb cfgRS/configsvr1:27017,configsvr2:27017,configsvr3:27017 --bind_ip_all</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">networks</span><span class="kw">:</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> mongo-cluster</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="network-configuration" class="level3">
+<h3 class="anchored" data-anchor-id="network-configuration">Network Configuration</h3>
+<ul>
+<li><strong>Bridge Network</strong>: The <code>mongo-cluster</code> network uses the <code>bridge</code> driver, which is Docker’s default network type. It allows containers on the same network to communicate with each other while isolating them from other networks.</li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">networks</span><span class="kw">:</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">mongo-cluster</span><span class="kw">:</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">driver</span><span class="kw">:</span><span class="at"> bridge</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="launching-the-setup" class="level3">
+<h3 class="anchored" data-anchor-id="launching-the-setup">Launching the Setup</h3>
+<p>To start the MongoDB cluster, run the following command in your terminal:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">-d</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="images/docker_compose.png" class="img-fluid"></p>
+<p>This will launch all configured MongoDB instances in detached mode, running the services in the background.</p>
+<p>By following this setup, you create a robust MongoDB cluster with configuration servers and shards, ensuring data distribution and fault tolerance.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> ps </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Shoudl show something similar</p>
+<p><img src="images/docker_ps.png" class="img-fluid"></p>
+</section>
+</section>
+<section id="initialize-relica-set" class="level2">
+<h2 class="anchored" data-anchor-id="initialize-relica-set">initialize relica set</h2>
+<p>This script is designed to initialize replica sets for a MongoDB sharded cluster setup. Here’s a concise and detailed breakdown:</p>
+<ol type="1">
+<li><strong>Initiate Config Server Replica Set</strong>:
+<ul>
+<li>The script begins by initiating the replica set for the config servers, which manage metadata and configuration settings for the sharded cluster.</li>
+<li>It uses the <code>mongosh</code> shell inside the <code>configsvr1</code> container to execute the <code>rs.initiate()</code> command.</li>
+<li>This command defines a replica set named <code>cfgRS</code>, indicating it’s a configuration server replica set with three members (<code>configsvr1</code>, <code>configsvr2</code>, <code>configsvr3</code>), each listening on port <code>27017</code>.</li>
+</ul></li>
+<li><strong>Initiate Shard 1 Replica Set</strong>:
+<ul>
+<li>Next, the script sets up the first shard’s replica set.</li>
+<li>Again, <code>mongosh</code> is used within the <code>shard1-node1</code> container to initiate <code>shard1RS</code>.</li>
+<li>It makes <code>shard1-node1</code>, <code>shard1-node2</code>, and <code>shard1-node3</code> members of this replica set, all listening on port <code>27018</code>.</li>
+</ul></li>
+<li><strong>Initiate Shard 2 Replica Set</strong>:
+<ul>
+<li>Finally, the script configures the second shard’s replica set.</li>
+<li>The initiation command runs in the <code>shard2-node1</code> container, creating a replica set named <code>shard2RS</code>.</li>
+<li>The members include <code>shard2-node1</code>, <code>shard2-node2</code>, and <code>shard2-node3</code>, using port <code>27019</code>.</li>
+</ul></li>
+<li><strong>Verification and Delays</strong>:
+<ul>
+<li>After each initiation, the script checks if the command executed successfully. If an error occurs, the script halts execution.</li>
+<li>Brief pauses (<code>sleep 5</code>) are added after each configuration to ensure the changes have time to propagate throughout the network.</li>
+</ul></li>
+</ol>
+<p>In summary, this script configures a MongoDB environment with distinct replica sets for configuration servers and two separate shard groups, essential steps in implementing a scalable and fault-tolerant sharded cluster.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to check if a command was successful</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span><span class="fu"> check_status</span> <span class="kw">{</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="bu">[</span> <span class="va">$?</span> <span class="ot">-ne</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"❌ An error occurred with the last command. Exiting script."</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------- Initiate Config Server Replica Set ----------</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"⚙️  Initiating Config Server Replica Set..."</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec configsvr1 mongosh <span class="at">--port</span> 27017 <span class="at">--eval</span> <span class="st">'</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="st">rs.initiate({</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="st">  _id: "cfgRS",</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="st">  configsvr: true,</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="st">  members: [</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="st">    { _id: 0, host: "configsvr1:27017" },</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="st">    { _id: 1, host: "configsvr2:27017" },</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="st">    { _id: 2, host: "configsvr3:27017" }</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="st">  ]</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="st">})'</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="ex">check_status</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Allow some time for the config server setup</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="fu">sleep</span> 5</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------- Initiate Shard 1 Replica Set ----------</span></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"⚙️  Initiating Shard 1 Replica Set..."</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec shard1-node1 mongosh <span class="at">--port</span> 27018 <span class="at">--eval</span> <span class="st">'</span></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a><span class="st">rs.initiate({</span></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a><span class="st">  _id: "shard1RS",</span></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a><span class="st">  members: [</span></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a><span class="st">    { _id: 0, host: "shard1-node1:27018" },</span></span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a><span class="st">    { _id: 1, host: "shard1-node2:27018" },</span></span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a><span class="st">    { _id: 2, host: "shard1-node3:27018" }</span></span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a><span class="st">  ]</span></span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a><span class="st">})'</span></span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a><span class="ex">check_status</span></span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Allow some time for the shard 1 setup</span></span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a><span class="fu">sleep</span> 5</span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------- Initiate Shard 2 Replica Set ----------</span></span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"⚙️  Initiating Shard 2 Replica Set..."</span></span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec shard2-node1 mongosh <span class="at">--port</span> 27019 <span class="at">--eval</span> <span class="st">'</span></span>
+<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a><span class="st">rs.initiate({</span></span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a><span class="st">  _id: "shard2RS",</span></span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a><span class="st">  members: [</span></span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a><span class="st">    { _id: 0, host: "shard2-node1:27019" },</span></span>
+<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a><span class="st">    { _id: 1, host: "shard2-node2:27019" },</span></span>
+<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a><span class="st">    { _id: 2, host: "shard2-node3:27019" }</span></span>
+<span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a><span class="st">  ]</span></span>
+<span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a><span class="st">})'</span></span>
+<span id="cb14-57"><a href="#cb14-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-58"><a href="#cb14-58" aria-hidden="true" tabindex="-1"></a><span class="ex">check_status</span></span>
+<span id="cb14-59"><a href="#cb14-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-60"><a href="#cb14-60" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"✅ Replica sets initialized!"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="images/init_replica.png" class="img-fluid"></p>
+</section>
+<section id="adding-sharding" class="level2">
+<h2 class="anchored" data-anchor-id="adding-sharding">adding sharding</h2>
+<p>Sharding is crucial for scaling databases horizontally, meaning that data is distributed across multiple servers, allowing for high availability and load balancing. This is especially important for large datasets, ensuring efficient resource utilization and performance.</p>
+<p>1 Added Shards to the Cluster:</p>
+<p>First, we connect to the MongoDB cluster using the MongoClient. The cluster is accessed through the mongos process, which acts as the point of contact between the application and the MongoDB sharded cluster. It intelligently routes queries to the correct shards based on metadata and sharding keys.</p>
+<p>By connecting via mongos, we leverage a centralized, intelligent query routing system crucial for scalable data operations.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> MongoClient(<span class="st">"mongodb://localhost:27020"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Step 2: Add Shards to the Cluster</p>
+<p>Next, we define and add our shards. Shards are essentially distributed chunks of your database, each managing a partition of the data. This helps alleviate bottlenecks by spreading data across multiple nodes.</p>
+<p>We add shards using the addShard command. Each shard typically runs as a replica set—a group of mongod instances that maintain the same data set. These commands tell MongoDB how to distribute your database across multiple machines to optimize for both data redundancy and processing load.</p>
+<p>Step 4: Set Up Indexing</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>client.admin.command(<span class="st">"addShard"</span>, <span class="st">"shard1RS/shard1-node1:27018,shard1-node2:27018,shard1-node3:27018"</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>client.admin.command(<span class="st">"addShard"</span>, <span class="st">"shard2RS/shard2-node1:27019,shard2-node2:27019,shard2-node3:27019"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Step 4: Set Up Indexing</p>
+<p>Before we shard a collection, it is crucial to set up an index on the field we intend to use as a shard key. Indexing optimizes both the query performance and the data distribution process.</p>
+<p>Here, we choose to create a hashed index on the MMSI field. A hashed index provides an even distribution of the data across all shards, which is particularly beneficial when the distribution of MMSI values is unknown or uneven. The hashed index is a preferred choice when you anticipate a non-uniform distribution of key values. It effectively minimizes the risk of creating unbalanced shards, which can lead to performance bottlenecks.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>vessel_collection.create_index([(<span class="st">"MMSI"</span>, <span class="st">"hashed"</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Step 5: Shard the Collection Finally, we shard the vesseldata collection in the ais_db database by the MMSI field using the hashed shard key. This step initiates the distribution of the data across all available shards based on the hash values of the MMSI field. Sharding the collection ensures that as the database grows, data is split intelligently, allowing the cluster to handle increased load without compromising performance.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>client.admin.command(<span class="st">"shardCollection"</span>, <span class="st">"ais_db.vesseldata"</span>, key<span class="op">=</span>{<span class="st">"MMSI"</span>: <span class="st">"hashed"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>its very important to ensure, that the balancer service has started as well.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>client.admin.command(<span class="st">"balancerStart"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Error Handling</p>
+<p>Throughout this process, we include error handling to manage potential issues that might arise during the setup. This ensures robustness in the scripts and provides informative feedback to identify and fix issues quickly.</p>
+<p>Whole <code>initialize_sharding.py</code></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pymongo <span class="im">import</span> MongoClient, errors</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Connect to the MongoDB sharded cluster via mongos</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> MongoClient(<span class="st">"mongodb://localhost:27020"</span>)  <span class="co"># Connecting to mongos</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add Shard 1 and Shard 2 to the cluster</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"⏳ Adding Shard 1..."</span>)</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    client.admin.command(<span class="st">"addShard"</span>, <span class="st">"shard1RS/shard1-node1:27018,shard1-node2:27018,shard1-node3:27018"</span>)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"⏳ Adding Shard 2..."</span>)</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    client.admin.command(<span class="st">"addShard"</span>, <span class="st">"shard2RS/shard2-node1:27019,shard2-node2:27019,shard2-node3:27019"</span>)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Enable sharding for the ais_db database</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"⚙️ Enabling Sharding for the ais_db database..."</span>)</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    client.admin.command(<span class="st">"enableSharding"</span>, <span class="st">"ais_db"</span>)</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a hashed index on the sharding key before sharding the collection</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"⚙️ Creating hashed index on 'mmsi' field..."</span>)</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    vessel_collection <span class="op">=</span> client[<span class="st">"ais_db"</span>][<span class="st">"vesseldata"</span>]</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    vessel_collection.create_index([(<span class="st">"mmsi"</span>, <span class="st">"hashed"</span>)])</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Shard the vesseldata collection by the MMSI field</span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"⚙️ Sharding collection vesseldata by mmsi..."</span>)</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>    client.admin.command(<span class="st">"shardCollection"</span>, <span class="st">"ais_db.vesseldata"</span>, key<span class="op">=</span>{<span class="st">"mmsi"</span>: <span class="st">"hashed"</span>})</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Start the balancer to redistribute data across shards</span></span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"🚀 Starting the balancer..."</span>)</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>    client.admin.command(<span class="st">"balancerStart"</span>)</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"✅ Shards added, sharding enabled, and balancer started successfully!"</span>)</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> errors.OperationFailure <span class="im">as</span> e:</span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"❌ Operation failed: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"❌ Unexpected error: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="inserting-data" class="level2">
+<h2 class="anchored" data-anchor-id="inserting-data">Inserting data</h2>
+<p>In this step we follwo follwoing logic - we read in all .parquet files that are available in the <code>clean_data</code> directiry. We split each data file into chunks of 100 000 rows. We insert each chunk separately.</p>
+<p>Using the size of 100 000 rows per chunk balances between speed and system resource usage.</p>
+<p>Given there are 10 instances of mongo db running with 2 shards and each shard has 2 replica set, the CPU is maxed out even in single file (not parrlell processing).</p>
+<p><img src="images/resources.png" class="img-fluid"></p>
+<p>However very strange, that during the upload, the <code>ncdu</code> only shows that data is being ingested into shard1</p>
+<p><img src="images/resources_2.png" class="img-fluid"></p>
+<p>After a lengthy period, the job was finished, but the cpu usage was still maxed out at 100% in all cores / threads. Then the redistribution started after the insert. which also took a while. This suggests the importance of not stopping the mondgo instances immidialty after data ingestion, but rather the need to wait until intenral processes are finished.</p>
+<p>It would be great to have a better monitoring system fro the mongo db cluster</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pymongo <span class="im">import</span> MongoClient</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> gc</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># MongoDB connection setup</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> MongoClient(<span class="st">"mongodb://localhost:27020"</span>)  <span class="co"># Connect to mongos router</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> client.ais_db</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>collection <span class="op">=</span> db.vesseldata</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Configuration</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>parquet_dir <span class="op">=</span> Path(<span class="st">"clean_data"</span>)  <span class="co"># Directory containing Parquet files</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>chunk_size <span class="op">=</span> <span class="dv">100_000</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to insert a chunk of data into MongoDB</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> insert_chunk(data_chunk, chunk_num):</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Insert a chunk of data into the MongoDB collection."""</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>    records <span class="op">=</span> data_chunk.to_dicts()</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>    collection.insert_many(records, ordered<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"✅ Inserted chunk </span><span class="sc">{</span>chunk_num<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span><span class="bu">len</span>(records)<span class="sc">}</span><span class="ss"> rows)"</span>)</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">del</span> records, data_chunk</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>    gc.collect()</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Process all Parquet files</span></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"⏳ Starting MongoDB data insertion..."</span>)</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file_number, file_path <span class="kw">in</span> <span class="bu">enumerate</span>(parquet_dir.glob(<span class="st">"*.parquet"</span>), start<span class="op">=</span><span class="dv">1</span>):</span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"⏳ Processing file </span><span class="sc">{</span>file_number<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>file_path<span class="sc">.</span>name<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pl.read_parquet(file_path)</span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>    total_rows <span class="op">=</span> df.height</span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>    chunk_num <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Insert data in chunks</span></span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, total_rows, chunk_size):</span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>        chunk <span class="op">=</span> df.<span class="bu">slice</span>(i, chunk_size)</span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a>        insert_chunk(chunk, chunk_num)</span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a>        chunk_num <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"✅ Completed processing file </span><span class="sc">{</span>file_number<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>file_path<span class="sc">.</span>name<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ All data inserted successfully."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="indexing-collection" class="level2">
+<h2 class="anchored" data-anchor-id="indexing-collection">Indexing collection</h2>
+<p>Once the data insertion has finished and data was distributed accross shards, now we can insert collection level indexing that should increase the speed of data retrieval. We index on 3 columns:</p>
+<ul>
+<li>mmsi</li>
+<li>timestamp</li>
+<li>date</li>
+</ul>
+<p>As these are columns to be used most often for selecting an object in the collection.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pymongo <span class="im">import</span> MongoClient</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Connect to the MongoDB router (mongos)</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> MongoClient(<span class="st">"mongodb://localhost:27020"</span>)  <span class="co"># Make sure the port is correct for your mongos</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Use consistent database and collection names aligned with your setup</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Assuming consistent naming aligning with previous scripts</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> client[<span class="st">"ais_db"</span>]  <span class="co"># Change to "ais_db" if consistent with your previous setup</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>collection <span class="op">=</span> db[<span class="st">"vesseldata"</span>]  <span class="co"># Change to "vesseldata" for consistency</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Fields to index for efficient filtering and retrieval</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>fields_to_index <span class="op">=</span> [</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"timestamp"</span>,</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"date"</span>,</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"mmsi"</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Create indexes on these fields</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> field <span class="kw">in</span> fields_to_index:</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"📌 Creating index on '</span><span class="sc">{</span>field<span class="sc">}</span><span class="ss">'..."</span>)</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    collection.create_index(field)</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ All indexes created."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="plotting-the-travel-of-a-certain-ship." class="level1">
+<h1>Plotting the travel of a certain ship.</h1>
+</section>
+<section id="proving-the-repliaction-works" class="level1">
+<h1>Proving the repliaction works</h1>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
