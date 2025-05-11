@@ -152,5 +152,12 @@
     "title": "MongoDB Cluster project",
     "section": "",
     "text": "MongoDB Cluster project\nTBD"
+  },
+  {
+    "objectID": "analysis/test.html",
+    "href": "analysis/test.html",
+    "title": "MongoDb Cluster Project",
+    "section": "",
+    "text": "import numpy as np\nimport pandas as pd\nimport matplotlib.pyplot as plt\nimport cartopy.crs as ccrs\nimport cartopy.feature as cfeature\nimport pymongo\n\n# MongoDB connection setup\nclient = pymongo.MongoClient(\"mongodb://localhost:27020\")\ndb = client.ais_db\ncollection = db.vesseldata\n\n# Example function to fetch data based on MMSI\ndef get_ship_data(mmsi):\n    return pd.DataFrame(list(collection.find({\"mmsi\": mmsi}, {\"latitude\": 1, \"longitude\": 1, \"timestamp\": 1, \"_id\": 0})))\n\ndef plot_ship_movements(ship_data):\n    plt.figure(figsize=(12, 10))  # Increase figure size for better clarity\n    ax = plt.axes(projection=ccrs.PlateCarree())\n\n    # Add features to improve map appearance\n    ax.add_feature(cfeature.LAND.with_scale('50m'), facecolor='lightgrey')\n    ax.add_feature(cfeature.OCEAN.with_scale('50m'), facecolor='lightblue')\n    ax.add_feature(cfeature.COASTLINE.with_scale('50m'))\n    ax.add_feature(cfeature.BORDERS.with_scale('50m'), linestyle='--')\n\n    ax.gridlines(draw_labels=True, dms=True, x_inline=False, y_inline=False)\n\n    # Set extent for Denmark and Estonia region\n    ax.set_extent([0, 30, 50, 70], crs=ccrs.PlateCarree())\n\n    # Scatter plot for ship data\n    ax.scatter(ship_data[\"longitude\"], ship_data[\"latitude\"], color='red', marker='o', s=10, zorder=5)\n\n\n    plt.title('Ship Movements in Denmark and Estonia Region')\n    plt.show()\n\n# Test with your MMSI\nmmsi = 277466000\nship_data = get_ship_data(mmsi)\n\nif not ship_data.empty:\n    plot_ship_movements(ship_data)\nelse:\n    print(f\"No records found for MMSI: {mmsi}\")"
   }
 ]
