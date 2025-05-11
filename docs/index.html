@@ -198,6 +198,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#plotting-the-travel-of-a-certain-ship." id="toc-plotting-the-travel-of-a-certain-ship." class="nav-link" data-scroll-target="#plotting-the-travel-of-a-certain-ship.">Plotting the travel of a certain ship.</a></li>
   <li><a href="#proving-the-repliaction-works" id="toc-proving-the-repliaction-works" class="nav-link" data-scroll-target="#proving-the-repliaction-works">Proving the repliaction works</a></li>
+  <li><a href="#interacting-with-mongodb" id="toc-interacting-with-mongodb" class="nav-link" data-scroll-target="#interacting-with-mongodb">Interacting with mongodb</a></li>
   </ul>
 </nav>
     </div>
@@ -848,10 +849,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Using the size of 100 000 rows per chunk balances between speed and system resource usage.</p>
 <p>Given there are 10 instances of mongo db running with 2 shards and each shard has 2 replica set, the CPU is maxed out even in single file (not parrlell processing).</p>
 <p><img src="images/resources.png" class="img-fluid"></p>
-<p>However very strange, that during the upload, the <code>ncdu</code> only shows that data is being ingested into shard1</p>
 <p><img src="images/resources_2.png" class="img-fluid"></p>
-<p>After a lengthy period, the job was finished, but the cpu usage was still maxed out at 100% in all cores / threads. Then the redistribution started after the insert. which also took a while. This suggests the importance of not stopping the mondgo instances immidialty after data ingestion, but rather the need to wait until intenral processes are finished.</p>
-<p>It would be great to have a better monitoring system fro the mongo db cluster</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pymongo <span class="im">import</span> MongoClient</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
@@ -982,6 +980,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="proving-the-repliaction-works" class="level1">
 <h1>Proving the repliaction works</h1>
+</section>
+<section id="interacting-with-mongodb" class="level1">
+<h1>Interacting with mongodb</h1>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec <span class="at">-it</span> mongos mongosh <span class="at">--port</span> 27017</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

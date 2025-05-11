@@ -697,13 +697,10 @@ Given there are 10 instances of mongo db running with 2 shards and each shard ha
 
 ![](images/resources.png)
 
-However very strange, that during the upload, the `ncdu` only shows that data is being ingested into shard1
+
 
 ![](images/resources_2.png)
 
-After a lengthy period, the job was finished, but the cpu usage was still maxed out at 100% in all cores / threads. Then the redistribution started after the insert. which also took a while. This suggests the importance of not stopping the mondgo instances immidialty after data ingestion, but rather the need to wait until intenral processes are finished.
-
-It would be great to have a better monitoring system fro the mongo db cluster 
 
 
 
@@ -849,3 +846,11 @@ else:
 ```
 
 # Proving the repliaction works
+
+# Interacting with mongodb
+
+
+```bash
+docker exec -it mongos mongosh --port 27017
+```
+
